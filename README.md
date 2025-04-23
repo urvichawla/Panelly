@@ -28,7 +28,7 @@ Panelly is a modern, full-stack web application that streamlines the technical i
 - Start/Join live meetings
 - Enable Camera and Mic
 - Screen sharing support
--  Built-in collaborative code editor (like Google Docs + Replit)
+-  code editor
 
 ---
 
