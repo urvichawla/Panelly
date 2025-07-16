@@ -16,12 +16,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarIcon, CheckCircle2Icon, ClockIcon, XCircleIcon } from "lucide-react";
 import { format } from "date-fns";
 import CommentDialog from "@/components/CommentDialog";
+import { useUserRole } from "@/hooks/useUserRole";
+import { useUser } from "@clerk/nextjs";
 
 type Interview = Doc<"interviews">;
 function DashboardPage() {
   const users=useQuery(api.users.getUsers);
   const interviews=useQuery(api.interviews.getAllInterviews);
   const updateStatus=useMutation(api.interviews.updateInterviewStatus);
+  const { isInterviewer, isCandidate, isLoading } = useUserRole();
+  const { user } = useUser();
   const handleStatusUpdate = async (interviewId: Id<"interviews">, status: string) => {
     try {
       await updateStatus({ id: interviewId, status });
@@ -30,16 +34,26 @@ function DashboardPage() {
       toast.error("Failed to update status");
     }
   };
-  if (!interviews || !users) return <LoaderUI />;
+  if (!interviews || !users || isLoading) return <LoaderUI />;
 
-  const groupedInterviews = groupInterviews(interviews);
+  // Filter interviews for candidates and interviewers
+  let filteredInterviews = interviews;
+  if (isCandidate && user?.id) {
+    filteredInterviews = interviews.filter((interview: Interview) => interview.candidateId === user.id);
+  } else if (isInterviewer && user?.id) {
+    filteredInterviews = interviews.filter((interview: Interview) => interview.interviewerIds.includes(user.id));
+  }
+
+  const groupedInterviews = groupInterviews(filteredInterviews);
 
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center mb-8">
-        <Link href="/schedule">
-          <Button>Schedule New Interview</Button>
-        </Link>
+        {isInterviewer && (
+          <Link href="/schedule">
+            <Button>Schedule New Interview</Button>
+          </Link>
+        )}
       </div>
 
       <div className="space-y-8">
@@ -109,7 +123,8 @@ function DashboardPage() {
                               </Button>
                             </div>
                           )}
-                          <CommentDialog interviewId={interview._id} />
+                          {isInterviewer && <CommentDialog interviewId={interview._id} />}
+                          {isCandidate && <CommentDialog interviewId={interview._id} readOnly />}
                         </CardFooter>
                       </Card>
                     );

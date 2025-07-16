@@ -22,7 +22,7 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 
-function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
+function CommentDialog({ interviewId, readOnly = false }: { interviewId: Id<"interviews">, readOnly?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("3");
@@ -66,12 +66,22 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {/* TRIGGER BUTTON */}
-      <DialogTrigger asChild>
-        <Button variant="secondary" className="w-full">
-          <MessageSquareIcon className="h-4 w-4 mr-2" />
-          Add Comment
-        </Button>
-      </DialogTrigger>
+      {!readOnly && (
+        <DialogTrigger asChild>
+          <Button variant="secondary" className="w-full">
+            <MessageSquareIcon className="h-4 w-4 mr-2" />
+            Add Comment
+          </Button>
+        </DialogTrigger>
+      )}
+      {readOnly && (
+        <DialogTrigger asChild>
+          <Button variant="outline" className="w-full">
+            <MessageSquareIcon className="h-4 w-4 mr-2" />
+            View Comments
+          </Button>
+        </DialogTrigger>
+      )}
 
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
@@ -89,7 +99,7 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
               </div>
 
               {/* DISPLAY EXISTING COMMENTS */}
-              <ScrollArea className="h-[240px]">
+              <ScrollArea className="h-48">
                 <div className="space-y-4">
                   {existingComments.map((comment, index) => {
                     const interviewer = getInterviewerInfo(users, comment.interviewerId);
@@ -119,44 +129,49 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
             </div>
           )}
 
-          <div className="space-y-4">
-            {/* RATING */}
-            <div className="space-y-2">
-              <Label>Rating</Label>
-              <Select value={rating} onValueChange={setRating}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select rating" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5].map((value) => (
-                    <SelectItem key={value} value={value.toString()}>
-                      <div className="flex items-center gap-2">{renderStars(value)}</div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Only show add comment form if not readOnly */}
+          {!readOnly && (
+            <>
+              {/* RATING */}
+              <div className="space-y-2">
+                <Label>Rating</Label>
+                <Select value={rating} onValueChange={setRating}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select rating" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <SelectItem key={value} value={value.toString()}>
+                        <div className="flex items-center gap-2">{renderStars(value)}</div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* COMMENT */}
-            <div className="space-y-2">
-              <Label>Your Comment</Label>
-              <Textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Share your detailed comment about the candidate..."
-                className="h-32"
-              />
-            </div>
-          </div>
+              {/* COMMENT */}
+              <div className="space-y-2">
+                <Label>Your Comment</Label>
+                <Textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Share your detailed comment about the candidate..."
+                  className="h-32"
+                />
+              </div>
+            </>
+          )}
         </div>
 
         {/* BUTTONS */}
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit}>Submit</Button>
-        </DialogFooter>
+        {!readOnly && (
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit}>Submit</Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
