@@ -104,7 +104,7 @@ function DashboardPage() {
 
                         {/* PASS & FAIL BUTTONS */}
                         <CardFooter className="p-4 pt-0 flex flex-col gap-3">
-                          {interview.status === "completed" && (
+                          {isInterviewer && interview.status === "completed" && (
                             <div className="flex gap-2 w-full">
                               <Button
                                 className="flex-1"
@@ -121,6 +121,13 @@ function DashboardPage() {
                                 <XCircleIcon className="h-4 w-4 mr-2" />
                                 Fail
                               </Button>
+                            </div>
+                          )}
+                          {isCandidate && ["succeeded", "failed"].includes(interview.status) && (
+                            <div className="flex gap-2 w-full">
+                              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${interview.status === "succeeded" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>
+                                {interview.status === "succeeded" ? "Succeeded" : "Failed"}
+                              </span>
                             </div>
                           )}
                           {isInterviewer && <CommentDialog interviewId={interview._id} />}
