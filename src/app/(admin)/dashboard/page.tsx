@@ -18,6 +18,9 @@ import { format } from "date-fns";
 import CommentDialog from "@/components/CommentDialog";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ButtonColorful } from "@/components/ButtonColorful";
 
 type Interview = Doc<"interviews">;
 function DashboardPage() {
@@ -68,72 +71,96 @@ function DashboardPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {groupedInterviews[category.id].map((interview: Interview) => {
+                  {groupedInterviews[category.id].map((interview: Interview, idx: number) => {
                     const candidateInfo = getCandidateInfo(users, interview.candidateId);
                     const startTime = new Date(interview.startTime);
 
                     return (
-                      <Card className="hover:shadow-md transition-all">
-                        {/* CANDIDATE INFO */}
-                        <CardHeader className="p-4">
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                              <AvatarImage src={candidateInfo.image} />
-                              <AvatarFallback>{candidateInfo.initials}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <CardTitle className="text-base">{candidateInfo.name}</CardTitle>
-                              <p className="text-sm text-muted-foreground">{interview.title}</p>
-                            </div>
-                          </div>
-                        </CardHeader>
+                      <motion.div
+                        key={interview._id}
+                        className="relative group p-2 h-full w-full"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <span className="absolute inset-[-8px] h-[calc(100%+16px)] w-[calc(100%+16px)] bg-neutral-200 dark:bg-slate-800/80 block rounded-[2rem] z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg" />
+                        <div className="relative z-10">
+                          {/* CANDIDATE INFO */}
+                          <Card className="hover:shadow-md transition-all">
+                            <CardHeader className="p-4">
+                              <div className="flex items-center gap-3">
+                                <Avatar className="h-10 w-10">
+                                  <AvatarImage src={candidateInfo.image} />
+                                  <AvatarFallback>{candidateInfo.initials}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <CardTitle className="text-base">{candidateInfo.name}</CardTitle>
+                                  <p className="text-sm text-muted-foreground">{interview.title}</p>
+                                </div>
+                              </div>
+                            </CardHeader>
 
-                        {/* DATE &  TIME */}
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <CalendarIcon className="h-4 w-4" />
-                              {format(startTime, "MMM dd")}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="h-4 w-4" />
-                              {format(startTime, "hh:mm a")}
-                            </div>
-                          </div>
-                        </CardContent>
+                            {/* DATE &  TIME */}
+                            <CardContent className="p-4">
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <CalendarIcon className="h-4 w-4" />
+                                  {format(startTime, "MMM dd")}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <ClockIcon className="h-4 w-4" />
+                                  {format(startTime, "hh:mm a")}
+                                </div>
+                              </div>
+                            </CardContent>
 
-                        {/* PASS & FAIL BUTTONS */}
-                        <CardFooter className="p-4 pt-0 flex flex-col gap-3">
-                          {isInterviewer && interview.status === "completed" && (
-                            <div className="flex gap-2 w-full">
-                              <Button
-                                className="flex-1"
-                                onClick={() => handleStatusUpdate(interview._id, "succeeded")}
-                              >
-                                <CheckCircle2Icon className="h-4 w-4 mr-2" />
-                                Pass
-                              </Button>
-                              <Button
-                                variant="destructive"
-                                className="flex-1"
-                                onClick={() => handleStatusUpdate(interview._id, "failed")}
-                              >
-                                <XCircleIcon className="h-4 w-4 mr-2" />
-                                Fail
-                              </Button>
-                            </div>
-                          )}
-                          {isCandidate && ["succeeded", "failed"].includes(interview.status) && (
-                            <div className="flex gap-2 w-full">
-                              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${interview.status === "succeeded" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>
-                                {interview.status === "succeeded" ? "Succeeded" : "Failed"}
-                              </span>
-                            </div>
-                          )}
-                          {isInterviewer && <CommentDialog interviewId={interview._id} />}
-                          {isCandidate && <CommentDialog interviewId={interview._id} readOnly />}
-                        </CardFooter>
-                      </Card>
+                            {/* PASS & FAIL BUTTONS */}
+                            <CardFooter className="p-4 pt-0 flex flex-col gap-3">
+                              {isInterviewer && interview.status === "completed" && (
+                                <div className="flex gap-2 w-full">
+                                  <ButtonColorful
+                                    className="flex-1"
+                                    label="Pass"
+                                    onClick={() => handleStatusUpdate(interview._id, "succeeded")}
+                                    showArrow={false}
+                                  >
+                                    <CheckCircle2Icon className="h-4 w-4 mr-2" />
+                                    Pass
+                                  </ButtonColorful>
+                                  <ButtonColorful
+                                    className="flex-1 bg-gradient-to-r from-red-500 via-pink-500 to-yellow-500"
+                                    label="Fail"
+                                    onClick={() => handleStatusUpdate(interview._id, "failed")}
+                                    showArrow={false}
+                                  >
+                                    <XCircleIcon className="h-4 w-4 mr-2" />
+                                    Fail
+                                  </ButtonColorful>
+                                </div>
+                              )}
+                              {isCandidate && ["succeeded", "failed"].includes(interview.status) && (
+                                <div className="flex gap-2 w-full">
+                                  {interview.status === "succeeded" ? (
+                                    <ButtonColorful
+                                      className="flex-1 bg-gradient-to-r from-emerald-400 via-green-500 to-lime-400"
+                                      label="Succeeded"
+                                      disabled
+                                      showArrow={false}
+                                    />
+                                  ) : (
+                                    <ButtonColorful
+                                      className="flex-1 bg-gradient-to-r from-red-500 via-pink-500 to-yellow-500"
+                                      label="Failed"
+                                      disabled
+                                      showArrow={false}
+                                    />
+                                  )}
+                                </div>
+                              )}
+                              {isInterviewer && <CommentDialog interviewId={interview._id} />}
+                              {isCandidate && <CommentDialog interviewId={interview._id} readOnly />}
+                            </CardFooter>
+                          </Card>
+                        </div>
+                      </motion.div>
                     );
                   })}
                 </div>
