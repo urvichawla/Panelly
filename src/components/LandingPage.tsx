@@ -40,22 +40,22 @@ export default function LandingPage() {
               <FeatureCard
                 icon={<CalendarIcon className="h-6 w-6 text-emerald-400" />}
                 title="Schedule Meetings"
-                description="Easily schedule interviews with candidates at your convenience."
+                description="Easily schedule interviews with candidates at your convenience. Manage all your sessions in one place."
               />
               <FeatureCard
                 icon={<ClockIcon className="h-6 w-6 text-emerald-400" />}
                 title="Create Instant Meetings"
-                description="Start meetings instantly and manage your interview sessions."
+                description="Start meetings instantly and manage your interview sessions with ease."
               />
               <FeatureCard
                 icon={<StarIcon className="h-6 w-6 text-emerald-400" />}
                 title="Add Reviews & Feedback"
-                description="Provide valuable feedback and rate candidates after each interview."
+                description="Provide valuable feedback and rate candidates after each interview session."
               />
               <FeatureCard
                 icon={<CheckCircle2Icon className="h-6 w-6 text-emerald-400" />}
                 title="Mark Results"
-                description="Mark candidates as passed or failed."
+                description="Mark candidates as passed or failed and track interview outcomes."
               />
             </div>
           </div>
@@ -70,22 +70,22 @@ export default function LandingPage() {
               <FeatureCard
                 icon={<CalendarIcon className="h-6 w-6 text-emerald-400" />}
                 title="Code in Real-Time"
-                description="Practice coding live in our built-in code editor during your remote interviews."
+                description="Practice coding live in our built-in code editor during your remote interviews. Collaborate and solve problems together."
               />
               <FeatureCard
                 icon={<MessageSquareIcon className="h-6 w-6 text-emerald-400" />}
                 title="Receive Feedback"
-                description="Get detailed feedback and ratings to help you improve."
+                description="Get detailed feedback and ratings to help you improve after every session."
               />
               <FeatureCard
                 icon={<StarIcon className="h-6 w-6 text-emerald-400" />}
                 title="Track Progress"
-                description="See your interview history and monitor your growth."
+                description="See your interview history and monitor your growth over time with detailed analytics."
               />
               <FeatureCard
                 icon={<CheckCircle2Icon className="h-6 w-6 text-emerald-400" />}
                 title="Achieve Success"
-                description="Prepare, practice, and succeed in your real interviews."
+                description="Prepare, practice, and succeed in your real interviews with confidence."
               />
             </div>
           </div>

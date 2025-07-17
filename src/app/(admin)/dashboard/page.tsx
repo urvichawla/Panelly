@@ -51,6 +51,11 @@ function DashboardPage() {
 
   return (
     <div className="container mx-auto py-10">
+      {isCandidate && (
+        <div className="mb-6">
+          <p className="text-base text-muted-foreground">You will see all your scheduled interviews here as they are added.</p>
+        </div>
+      )}
       <div className="flex items-center mb-8">
         {isInterviewer && (
           <Link href="/schedule">
