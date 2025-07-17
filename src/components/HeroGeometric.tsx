@@ -73,7 +73,7 @@ function ElegantShape({
 function HeroGeometric({
    
     title1 = "Practice. Interview. Succeed.",
-    title2 = "Mock Interviews for Everyone",
+   
     children,
 }: {
     badge?: string;
@@ -161,7 +161,7 @@ function HeroGeometric({
                                     "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 "
                                 )}
                             >
-                                {title2}
+                               
                             </span>
                         </h1>
                     </motion.div>
@@ -172,8 +172,7 @@ function HeroGeometric({
                         animate="visible"
                     >
                         <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-                            Crafting exceptional digital experiences through
-                            innovative design and cutting-edge technology.
+                        Ace your next job interview from anywhere. Practice, connect, and succeed—remotely.
                         </p>
                         {children}
                     </motion.div>

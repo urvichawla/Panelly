@@ -18,14 +18,14 @@ export default function LandingPage() {
   return (
     <HeroGeometric
    
-      title1="Practice. Interview. Succeed."
-      title2="Mock Interviews for Everyone"
+      title1=" Welcome to Panelly"
+      
     >
       <div className="flex flex-col gap-6 items-center justify-center">
         <SignInButton mode="modal" forceRedirectUrl="/role-selection">
           <ButtonColorful
             label="Get Started"
-            className="w-full text-lg px-8 py-4"
+            className="text-lg px-8 py-4"
           />
         </SignInButton>
       </div>
@@ -55,7 +55,7 @@ export default function LandingPage() {
               <FeatureCard
                 icon={<CheckCircle2Icon className="h-6 w-6 text-emerald-400" />}
                 title="Mark Results"
-                description="Mark candidates as passed or failed and track interview outcomes."
+                description="Mark candidates as passed or failed."
               />
             </div>
           </div>
@@ -69,8 +69,8 @@ export default function LandingPage() {
             <div className="grid gap-4 w-full">
               <FeatureCard
                 icon={<CalendarIcon className="h-6 w-6 text-emerald-400" />}
-                title="Book Interviews"
-                description="Book mock interviews with experienced interviewers."
+                title="Code in Real-Time"
+                description="Practice coding live in our built-in code editor during your remote interviews."
               />
               <FeatureCard
                 icon={<MessageSquareIcon className="h-6 w-6 text-emerald-400" />}
