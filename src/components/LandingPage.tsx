@@ -6,6 +6,7 @@ import { ModeToggle } from "./ModeToggle";
 import { HeroGeometric } from "./HeroGeometric";
 import { BackgroundGradient } from "./BackgroundGradient";
 import { ButtonColorful } from "./ButtonColorful";
+import { SignInButton } from "@clerk/clerk-react";
 
 // Add Tailwind keyframes and animation classes in your global CSS if not already present
 // .animate-fadeIn { animation: fadeIn 1s ease-out both; }
@@ -21,16 +22,12 @@ export default function LandingPage() {
       title2="Mock Interviews for Everyone"
     >
       <div className="flex flex-col gap-6 items-center justify-center">
-        <a
-          href="https://epic-labrador-9.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fpanelly.vercel.app%2Frole-selection"
-          rel="noopener noreferrer"
-          className="w-full max-w-xs"
-        >
+        <SignInButton mode="modal" forceRedirectUrl="/role-selection">
           <ButtonColorful
             label="Get Started"
             className="w-full text-lg px-8 py-4"
           />
-        </a>
+        </SignInButton>
       </div>
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-16 mt-12 items-stretch">
         {/* Interviewer Features */}

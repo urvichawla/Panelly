@@ -14,6 +14,7 @@ import { Loader, Loader2Icon } from "lucide-react";
 import MeetingCard from "@/components/MeetingCard";
 import { HoverEffect, Card, CardTitle, CardDescription } from "@/components/HoverEffect";
 import { AnimatePresence, motion } from "framer-motion";
+import { SignInButton } from "@clerk/clerk-react";
 
 export default function Home() {
   // Authenticated user experience
